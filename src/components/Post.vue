@@ -10,7 +10,10 @@
 			<textarea></textarea>
 		</article>
 		<footer>
-			<button>취소</button>
+			<router-link to="/">
+				<button>취소</button>
+			</router-link>
+
 			<button v-on:click="test">완료</button>
 		</footer>
 		
