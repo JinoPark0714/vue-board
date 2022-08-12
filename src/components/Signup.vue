@@ -8,7 +8,7 @@
 		<input v-model="userPhoneNumber" type="text" id="userPhoneNumber" placeholder="phone number xxx-xxxx-xxxx">
 		<button v-on:click="onTest()">Sign up</button>
 
-		<router-link to="/">
+		<router-link to="/signin">
 			<button>Cancel</button>
 		</router-link>
 
@@ -17,7 +17,6 @@
 
 <script>
 import axios from 'axios';
-import 'regenerator-runtime/runtime';
 export default {
 	data : function(){
 		return {
@@ -31,20 +30,21 @@ export default {
 	},
 	methods : {
 		onTest : async function(){
-			const option = {
-				method : 'POST',
-				headers : {
-					"Content-Type" : "application/json"
-				},
-				body : {
+			const params = {
 					user_id : this.userId,
 					user_password : this.userPassword,
 					user_name : this.userName,
 					user_nickname : this.userNickname,
-					user_phone_number : this.userPhoneNumber
+					user_phone_number : this.userPhoneNumber				
+			};
+
+			const option = {
+				method : 'POST',
+				headers : {
+					"Content-Type" : "application/json"
 				}
 			};
-			const response =  await axios.post(`${process.env.VUE_APP_BASE_URL}/user`, option);
+			const response =  await axios.post(`${process.env.VUE_APP_BASE_URL}/user`, params, option);
 			const {data} = await response;
 			console.log(data);
 		}

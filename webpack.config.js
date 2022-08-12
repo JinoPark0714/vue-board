@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var dotenv = require('dotenv').config().parsed;
 
 module.exports = {
   entry: './src/main.js',
@@ -54,18 +55,24 @@ module.exports = {
     hints: false
   },
   devtool: '#eval-source-map',
-  plugins: [
+}
+
+
+// 개발 환경
+if (process.env.NODE_ENV === 'development'){
+  console.log("개발 환경입니다.");
+  module.exports.plugins  = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"development"',
-        VUE_APP_BASE_URL : '"http://localhost:3000"'
+        VUE_APP_BASE_URL : `"${process.env.VUE_APP_BASE_URL}"`
       }
     })
-  ]
-  
-
+  ]);
 }
 
+
+// 배포
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html

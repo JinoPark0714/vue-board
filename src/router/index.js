@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import {Signin, Signup, Post} from '../components';
+import {Signin, Signup, Post, Boards} from '../components';
 
 Vue.use(VueRouter);
 
@@ -8,7 +8,7 @@ export default new VueRouter({
   mode : 'history',
   routes: [
     {
-      path : '/',
+      path : '/signin',
       component : Signin
     },
     {
@@ -18,6 +18,10 @@ export default new VueRouter({
     {
       path : `/post`,
       component : Post
+    },
+    {
+      path : '/',
+      component : Boards
     }
   ]
 

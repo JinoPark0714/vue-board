@@ -1,20 +1,23 @@
 <template>
 	<div class="input-form">
-		
+		<h2>Simple Board</h2>
 		<input v-model="userId" type="text" id="userId" placeholder="Id 6 more than">
-		<input v-model="userPassword" type="password" id="userPassword" placeholder="Password 8 more than">
-
+		<input v-model="userPassword" type="password" id="userPassword" placeholder="Password 8 more than" v-on:keyup.enter="onTest">
 		<button v-on:click="onTest">Sign in</button>
 		<router-link to="/signup">
 			<button>Sign up</button>
 		</router-link>
-		
+		<router-link to="/">
+			<button>To main</button>
+		</router-link>
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
+import message from '../common/message';
 import 'regenerator-runtime/runtime';
+
 
 export default {
 	data : function(){
@@ -36,10 +39,15 @@ export default {
 					"Content-Type" : "application/json"
 				}
 			};
-
-			const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/user/signin`, params);
-			const data = await response.data;
-			console.log(data);
+			try {
+				const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/user/signin`, params, option);
+				document.cookie = `accessToken=${response.data.accessToken}`;
+				
+				this.$router.push('/');
+			} catch (error) {
+				console.log(error.message);
+				alert(message.NOT_FOUND);
+			}
 		}
 		
 	}

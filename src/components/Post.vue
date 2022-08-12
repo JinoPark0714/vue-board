@@ -32,12 +32,12 @@ export default {
 
 <style scoped>
 	input{
-		width: 500px;
+		width: 330px;
 		height: 30px;
 		font-size: 15pt;
 	}
 	textarea{
-		width: 500px;
+		width: 330px;
 		height: 250px;
 		border-radius:0.5rem;
 		border: 3px solid #000;
