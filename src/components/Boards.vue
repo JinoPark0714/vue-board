@@ -11,19 +11,19 @@ import axios from 'axios';
 export default {
   methods : {
     postBoard : async function(){
-      const option = {
-        headers : {
-          "Content-Type" : "application/json",
-        }
-      }
       const cookie = this.$cookies.get("accessToken");
       console.log(cookie);
-      if(!cookie){
-        const result = this.validate(token);
-        this.$router.push('/signin');
+      if(cookie){
+        const expired = await this.validate(cookie);
+        if(!expired)        
+          this.redirect('post')
+        else{
+          alert("토큰이 만료됐습니다. 다시 로그인해주세요.");
+          this.$router.push('/signin');
+        }
       }
       else
-        this.$router.push('/post');
+        this.redirect('/signin');
     },
     
     validate : async function(token) {
@@ -32,18 +32,19 @@ export default {
           "Content-Type" : "application/json",
         }
       };
-
-      const params = {
-        accessToken : token
-      };
+      const params = {accessToken : token};
 
       try {
-        const {data} = await axios.post(`${process.env.VUE_APP_BASE_URL}/user/verify`, params, option);
+        const {data} = await axios.post(`${process.env.VUE_APP_BASE_URL}/auth/verify`, params, option);
         return data;
       } catch (error) {
         console.log(error);
         return error;
       }
+    },
+
+    redirect : function(url){
+      this.$router.push(url);
     }
   }
 }
