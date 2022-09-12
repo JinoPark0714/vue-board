@@ -15,8 +15,8 @@ export default {
       console.log(cookie);
       if(cookie){
         const expired = await this.validate(cookie);
-        if(!expired)        
-          this.redirect('post')
+        if(expired)        
+          this.$router.push('/post'); 
         else{
           alert("토큰이 만료됐습니다. 다시 로그인해주세요.");
           this.$router.push('/signin');
