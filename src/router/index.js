@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import {Signin, Signup, Post, Boards} from '../components';
+import {Signin, Signup, Post, Boards, UserProfile} from '../components';
 
 Vue.use(VueRouter);
 
@@ -22,6 +22,10 @@ export default new VueRouter({
     {
       path : '/',
       component : Boards
+    },
+    {
+      path : `/profile`,
+      component : UserProfile
     }
   ]
 

@@ -2,8 +2,8 @@
 	<div class="input-form">
 		<h2>Simple Board</h2>
 		<input v-model="userId" type="text" id="userId" placeholder="Id 6 more than">
-		<input v-model="userPassword" type="password" id="userPassword" placeholder="Password 8 more than" v-on:keyup.enter="signIn">
-		<button v-on:click="signIn">Sign in</button>
+		<input v-model="userPassword" type="password" id="userPassword" placeholder="Password 8 more than" v-on:keyup.enter="onSignin">
+		<button v-on:click="onSignin">Sign in</button>
 		<router-link to="/signup">
 			<button>Sign up</button>
 		</router-link>
@@ -14,11 +14,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-import message from '../common/message';
 import VueCookies from 'vue-cookies';
 import 'regenerator-runtime/runtime';
-
+import userApi from '../api/user';
+import userAPI from '../api/userapi';
 
 export default {
 	data : function(){
@@ -28,29 +27,22 @@ export default {
 		}
 	},
 	methods : {
-		signIn : async function(){
+		onSignin : async function(){
+			const result = await userApi.signin(this.userId, this.userPassword);
+			console.log(result);
+		},
+
+		onTest : async function(){
 			const params = {
 				user_id : this.userId,
 				user_password : this.userPassword
 			};
-
 			const option = {
-				method : "POST",
-				headers : {
-					"Content-Type" : "application/json"
-				}
+				"authorization" : "SeCrEt",
+				"refresh" : "SeCReTKEYRR"
 			};
-			try {
-				const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/user/signin`, params, option);
-				if(response.status === 201){
-					console.log(response.headers['set-cookie']);
-					this.$router.push('/');
-				}
-
-			} catch (error) {
-				console.log(error.message);
-				alert(message.NOT_FOUND);
-			}
+			const result = await userAPI('/user/test', "POST", params, option);
+			console.log(result);
 		}
 		
 	}
@@ -67,7 +59,7 @@ export default {
 	input{
 		height: 40px;
 		line-height:50px;
-		border-radius:0.7rem;
+		border-radius:0.4rem;
 		font-size: 15pt;
 		text-align: center;
 		width: 300px;
@@ -77,15 +69,15 @@ export default {
 	button{
 		width: 300px;
 		line-height:40px;
-		border-radius:0.7rem;
+		border-radius:0.4rem;
 		font-size: 15pt;
-		background-color: #000;
-		color: #fff;
+		background-color: #222222;
+		color: #f6f6f6;
 		margin: 5px;
 	}
 
 	button:active{
-		background-color:#fff;
-		color:#000;
+		background-color:#f6f6f6;
+		color:#222222;
 	}
 </style>

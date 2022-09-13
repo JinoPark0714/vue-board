@@ -6,7 +6,7 @@
 		<input v-model="userPasswordConfirm" type="password" id="userPasswordConfirm" placeholder="password confirm">
 		<input v-model="userNickname" type="text" id="userNickname" placeholder="nickname 4 more than">
 		<input v-model="userPhoneNumber" type="text" id="userPhoneNumber" placeholder="phone number xxx-xxxx-xxxx">
-		<button v-on:click="onTest()">Sign up</button>
+		<button v-on:click="onSignup()">Sign up</button>
 
 		<router-link to="/signin">
 			<button>Cancel</button>
@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+import userApi from '../api/user';
+
 export default {
 	data : function(){
 		return {
@@ -29,24 +30,23 @@ export default {
 		}
 	},
 	methods : {
-		onTest : async function(){
-			const params = {
-					user_id : this.userId,
-					user_password : this.userPassword,
-					user_name : this.userName,
-					user_nickname : this.userNickname,
-					user_phone_number : this.userPhoneNumber				
-			};
-
-			const option = {
-				method : 'POST',
-				headers : {
-					"Content-Type" : "application/json"
+		onSignup : async function(){
+			if(this.userPassword === this.userPasswordConfirm){
+				const user = {
+					userName : this.userName,
+					userId : this.userId,
+					userPassword : this.userPassword,
+					userNickname : this.userNickname,
+					userPhoneNumber : this.userPhoneNumber	
+				};
+				const { data } = await userApi.signup(user);
+				if(data){
+					alert("회원가입이 완료됐습니다.");
+					return data;
 				}
-			};
-			const response =  await axios.post(`${process.env.VUE_APP_BASE_URL}/user`, params, option);
-			const {data} = await response;
-			console.log(data);
+			}
+			alert("비밀번호와 비밀번호 확인란이 일치하지 않습니다.");
+
 		}
 	}
 };
@@ -59,14 +59,6 @@ export default {
 		align-items: center;
 	}
 
-	.input-button{
-		flex-direction: row;
-		display:flex;
-		width:300px;
-		justify-content:space-evenly;
-		border-radius :1px solid #eee;
-	}
-
 	input:focus{
 		outline : none;
 	}
@@ -74,7 +66,7 @@ export default {
 	input{
 		height: 40px;
 		line-height:50px;
-		border-radius:0.7rem;
+		border-radius:0.4rem;
 		font-size: 15pt;
 		text-align: center;
 		width: 300px;
@@ -84,15 +76,15 @@ export default {
 	button{
 		width: 300px;
 		line-height:40px;
-		border-radius:0.7rem;
+		border-radius:0.4rem;
 		font-size: 15pt;
-		background-color: #000;
-		color: #fff;
+		background-color: #222222;
+		color: #f6f6f6;
 		margin: 5px;
 	}
 	button:active{
-		background-color:#fff;
-		color:#000;
+		background-color:#f6f6f6;
+		color:#222222;
 	}
 
 </style>
