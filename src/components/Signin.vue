@@ -16,8 +16,7 @@
 <script>
 import VueCookies from 'vue-cookies';
 import 'regenerator-runtime/runtime';
-import userApi from '../api/user';
-import userAPI from '../api/userapi';
+import userApi from '../api/user/user';
 
 export default {
 	data : function(){
@@ -28,22 +27,9 @@ export default {
 	},
 	methods : {
 		onSignin : async function(){
-			const result = await userApi.signin(this.userId, this.userPassword);
-			console.log(result);
+			const { data } = await userApi.signin(this.userId, this.userPassword);
+			console.log(data);
 		},
-
-		onTest : async function(){
-			const params = {
-				user_id : this.userId,
-				user_password : this.userPassword
-			};
-			const option = {
-				"authorization" : "SeCrEt",
-				"refresh" : "SeCReTKEYRR"
-			};
-			const result = await userAPI('/user/test', "POST", params, option);
-			console.log(result);
-		}
 		
 	}
 }

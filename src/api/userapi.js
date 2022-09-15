@@ -46,14 +46,8 @@ function customParameter(param) {
   return params;
 }
 
-/**
- * 
- * @param {string} url '/user/test', '/auth'
- * @param {string} method 
- * @param {object} paramObject 
- * @param {object} option 
- * @returns 
- */
+// 동적 axios 구현해보기
+// 뻘짓
 export default async function (url, method, paramObject, option) {
   const requestParams = customParameter(paramObject);
   const requestOption = customOption(method, option);
@@ -61,10 +55,9 @@ export default async function (url, method, paramObject, option) {
   try {
     switch (method) {
       case "GET": {
-        const { status, data } = await axios.get(requestUrl, requestParams, requestOption);
+        const { status, data } = await axios.get(requestUrl, requestOption);
         return { status, data };
       }
-
       case "POST": {
         const { status, data } = await axios.post(requestUrl, requestParams, requestOption);
         return { status, data };
@@ -73,12 +66,17 @@ export default async function (url, method, paramObject, option) {
         const { status, data } = await axios.patch(requestUrl, requestParams, requestOption);
         return { status, data };
       }
-      case "PUT":
-      case "DELETE":
-
+      case "PUT": {
+        const { status, data } = await axios.put(requestUrl, requestParams, requestOption);
+        return { status, data };
+      }
+      case "DELETE": {
+        const { status, data } = await axios.delete(requestUrl, requestOption);
+        return { status, data };
+      }
     }
-
   } catch (error) {
-
+    console.error(error);
+    return null;
   }
 }

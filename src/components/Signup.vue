@@ -2,6 +2,7 @@
 	<div class="input-form">
 		<input v-model="userName" type="text" id="userName" placeholder="your name">
 		<input v-model="userId" type="text" id="userId" placeholder="Id 6 more than">
+		<button v-on:click="onCheckDuplication()">check duplication</button>
 		<input v-model="userPassword" type="password" id="userPassword" placeholder="Password 8 more than">
 		<input v-model="userPasswordConfirm" type="password" id="userPasswordConfirm" placeholder="password confirm">
 		<input v-model="userNickname" type="text" id="userNickname" placeholder="nickname 4 more than">
@@ -16,7 +17,7 @@
 </template>
 
 <script>
-import userApi from '../api/user';
+import userApi from '../api/user/user';
 
 export default {
 	data : function(){
@@ -26,10 +27,12 @@ export default {
 			userPassword : '',
 			userPasswordConfirm : '',
 			userNickname : '',
-			userPhoneNumber : ''
+			userPhoneNumber : '',
+			isChecked : this.$store.state.isChecked
 		}
 	},
 	methods : {
+		// 회원 가입
 		onSignup : async function(){
 			if(this.userPassword === this.userPasswordConfirm){
 				const user = {
@@ -37,16 +40,30 @@ export default {
 					userId : this.userId,
 					userPassword : this.userPassword,
 					userNickname : this.userNickname,
-					userPhoneNumber : this.userPhoneNumber	
+					userPhoneNumber : this.userPhoneNumber,
+					isChecked : this.$store.state.isChecked
 				};
 				const { data } = await userApi.signup(user);
-				if(data){
+				if(data)
 					alert("회원가입이 완료됐습니다.");
-					return data;
-				}
+				
+				return data;
 			}
 			alert("비밀번호와 비밀번호 확인란이 일치하지 않습니다.");
+		},
 
+		// 중복 체크 이벤트
+		onCheckDuplication : async function(){
+			const { data } = await userApi.checkDuplication(this.userId);
+			if(!data){
+				alert("이미 존재하는 ID입니다.");
+				return 0;
+			}
+			alert("사용 가능한 ID입니다.");
+			this.$store.commit('setIsChecked', {
+				value : true
+			});
+			return 0;
 		}
 	}
 };
