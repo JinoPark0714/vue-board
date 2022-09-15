@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies';
 import 'regenerator-runtime/runtime';
 import userApi from '../api/user/user';
 
@@ -29,6 +28,9 @@ export default {
 		onSignin : async function(){
 			const { data } = await userApi.signin(this.userId, this.userPassword);
 			console.log(data);
+			const {access_token, refresh_token} = data;
+			localStorage.accessToken = access_token;
+			localStorage.refreshToken = refresh_token;
 		},
 		
 	}

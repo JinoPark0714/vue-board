@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER_URL, SIGNIN_URL, DUPLICATION_URL } from './url';
+import { USER_URL, SIGNIN_URL, DUPLICATION_URL } from '../url';
 import { NotFoundException, BadRequestException } from '../../error/error';
 import 'regenerator-runtime/runtime';
 

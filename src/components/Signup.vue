@@ -1,16 +1,38 @@
 <template>
-	<div class="input-form">
-		<input v-model="userName" type="text" id="userName" placeholder="your name">
-		<input v-model="userId" type="text" id="userId" placeholder="Id 6 more than">
-		<button v-on:click="onCheckDuplication()">check duplication</button>
-		<input v-model="userPassword" type="password" id="userPassword" placeholder="Password 8 more than">
-		<input v-model="userPasswordConfirm" type="password" id="userPasswordConfirm" placeholder="password confirm">
-		<input v-model="userNickname" type="text" id="userNickname" placeholder="nickname 4 more than">
-		<input v-model="userPhoneNumber" type="text" id="userPhoneNumber" placeholder="phone number xxx-xxxx-xxxx">
-		<button v-on:click="onSignup()">Sign up</button>
+	<div class="body-form">
+		<div class="input-form">
+			<div>성명</div>
+			<input v-model="userName" type="text" id="userName">
+		</div>
+		<div class="input-form">
+			<div>아이디</div>
+			<input v-model="userId" type="text" id="userId" placeholder="6 more than">
+		</div>
+		<div class="input-form">
+			<button v-on:click="onCheckDuplication()">ID 중복 체크</button>
+		</div>
+		<br><br><br>
+		<div class="input-form">
+			<div>비밀번호</div>
+			<input v-model="userPassword" type="password" id="userPassword" placeholder="8 more than">
+		</div>
+		<div class="input-form">
+			<div>비밀번호 확인</div>
+			<input v-model="userPasswordConfirm" type="password" id="userPasswordConfirm">
+		</div>
+		<div class="input-form">
+			<div>닉네임</div>
+			<input v-model="userNickname" type="text" id="userNickname" placeholder="4 more than">
+		</div>
+		<div class="input-form">
+			<div>전화번호</div>
+			<input v-model="userPhoneNumber" type="text" id="userPhoneNumber" placeholder="xxx-xxxx-xxxx">
+		</div>
+		
+		<button v-on:click="onSignup()">회원가입</button>
 
 		<router-link to="/signin">
-			<button>Cancel</button>
+			<button>취소</button>
 		</router-link>
 
 	</div>
@@ -41,7 +63,7 @@ export default {
 					userPassword : this.userPassword,
 					userNickname : this.userNickname,
 					userPhoneNumber : this.userPhoneNumber,
-					isChecked : this.$store.state.isChecked
+					isChecked : this.isChecked
 				};
 				const { data } = await userApi.signup(user);
 				if(data)
@@ -60,25 +82,36 @@ export default {
 				return 0;
 			}
 			alert("사용 가능한 ID입니다.");
-			this.$store.commit('setIsChecked', {
-				value : true
-			});
+			this.setIsChecked(true);
 			return 0;
+		},
+
+		/**
+		 * set true or false
+		 * @param {boolean} value true or false
+		 */
+		setIsChecked : function(value){
+			this.$data.isChecked = value;
 		}
-	}
+	},
 };
 </script>
 
 <style scoped>
+	.body-form{
+		flex-direction: column;
+		display:flex;
+		justify-content: center;
+		align-items: center;
+		margin: 5px;
+	}
+
 	.input-form{
 		flex-direction: column;
 		display:flex;
-		align-items: center;
+		align-self: center;
 	}
 
-	input:focus{
-		outline : none;
-	}
 	
 	input{
 		height: 40px;

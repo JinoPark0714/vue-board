@@ -35,12 +35,6 @@ export const store = new Vuex.Store({
       state.userPhoneNumber = payload.value;
     },
 
-    setIsChecked(state, payload){
-      if(payload.value === true || payload.value === false)
-        state.isChecked = payload.value;
-      else 
-        throw new Error("잘못된 값입니다.");
-    },
   }
 
 });

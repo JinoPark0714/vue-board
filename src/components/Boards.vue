@@ -7,17 +7,17 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import AuthApi from '../api/auth/auth';
 export default {
   data : () =>({
     pencil : require('../assets/pencil.png')
   }),
   methods : {
     postBoard : async function(){
-      const cookie = this.$cookies.get("accessToken");
+      const cookie = localStorage.accessToken;
       console.log(cookie);
       if(cookie){
-        const expired = await this.validate(cookie);
+        const expired = await AuthApi.validate(cookie);
         if(expired)        
           this.$router.push('/post'); 
         else{
@@ -26,29 +26,9 @@ export default {
         }
       }
       else
-        this.redirect('/signin');
-    },
-    
-    validate : async function(token) {
-      const option = {
-        headers : {
-          "Content-Type" : "application/json",
-        }
-      };
-      const params = {accessToken : token};
-
-      try {
-        const {data} = await axios.post(`${process.env.VUE_APP_BASE_URL}/auth/verify`, params, option);
-        return data;
-      } catch (error) {
-        console.log(error);
-        return error;
-      }
+        this.$router.push('/signin');
     },
 
-    redirect : function(url){
-      this.$router.push(url);
-    }
   }
 }
 </script>
