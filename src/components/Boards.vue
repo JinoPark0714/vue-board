@@ -3,22 +3,28 @@
     <router-link to="/signin">
       <button>sign in</button>
     </router-link>
+    <router-link to="/profile">
+      <button>profile</button>
+    </router-link>
     <button v-on:click="postBoard">post</button>
   </div>
 </template>
 <script>
-import AuthApi from '../api/auth/auth';
+import { validate } from '../api/auth/auth';
 export default {
   data : () =>({
     pencil : require('../assets/pencil.png')
   }),
+
+
   methods : {
     postBoard : async function(){
-      const cookie = localStorage.accessToken;
-      console.log(cookie);
-      if(cookie){
-        const expired = await AuthApi.validate(cookie);
-        if(expired)        
+      const {accessToken, refreshToken} = localStorage;
+      
+      if(accessToken){
+        const expired = await validate(accessToken, refreshToken);
+        console.log(expired);
+        if(expired)
           this.$router.push('/post'); 
         else{
           alert("토큰이 만료됐습니다. 다시 로그인해주세요.");

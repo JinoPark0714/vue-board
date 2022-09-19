@@ -15,7 +15,7 @@
 
 <script>
 import 'regenerator-runtime/runtime';
-import userApi from '../api/user/user';
+import { signin } from '../api/user/user';
 
 export default {
 	data : function(){
@@ -26,11 +26,11 @@ export default {
 	},
 	methods : {
 		onSignin : async function(){
-			const { data } = await userApi.signin(this.userId, this.userPassword);
-			console.log(data);
+			const { data } = await signin(this.userId, this.userPassword);
 			const {access_token, refresh_token} = data;
 			localStorage.accessToken = access_token;
 			localStorage.refreshToken = refresh_token;
+			this.$router.push("/");
 		},
 		
 	}

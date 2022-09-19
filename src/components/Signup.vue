@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import userApi from '../api/user/user';
+import { signup, checkDuplication } from '../api/user/user';
 
 export default {
 	data : function(){
@@ -65,7 +65,7 @@ export default {
 					userPhoneNumber : this.userPhoneNumber,
 					isChecked : this.isChecked
 				};
-				const { data } = await userApi.signup(user);
+				const { data } = await signup(user);
 				if(data)
 					alert("회원가입이 완료됐습니다.");
 				
@@ -76,7 +76,7 @@ export default {
 
 		// 중복 체크 이벤트
 		onCheckDuplication : async function(){
-			const { data } = await userApi.checkDuplication(this.userId);
+			const { data } = await checkDuplication(this.userId);
 			if(!data){
 				alert("이미 존재하는 ID입니다.");
 				return 0;
